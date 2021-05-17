@@ -7,11 +7,8 @@ public class go {
         System.out.println("начало");
 
         step s = new step();
-        stepLeft tl= new stepLeft(s);
-        stepRight tr = new stepRight(s);
-
-        Thread legL = new Thread(tl);
-        Thread legR =new Thread(tr);
+        Thread legL = new Thread(new stepGo(s,1));
+        Thread legR =new Thread(new stepGo(s,0));
         legL.start();
         legR.start();
 
@@ -21,21 +18,21 @@ public class go {
 }
 class step {
 
-    private AtomicInteger c = new AtomicInteger(0);//0-left 1-right
-
+    private AtomicInteger stepController = new AtomicInteger(0);//0-left 1-right
+    private int count=0;
     public int getC(){
-        return c.get();
+        return stepController.get();
     }
 
     public void setC(int val) {
-        this.c.set(val);
+        this.stepController.set(val);
     }
-
-    public  void Left(){
-        System.out.println("left");
-    }
-    public  void Right() {
-        System.out.println("right");
+    public void Go(int goStep) {
+        if (goStep == 0) {
+            count++;System.out.println("left"+count);
+        } else {
+            count--;System.out.println("right"+count);
+        }
     }
 
 }
